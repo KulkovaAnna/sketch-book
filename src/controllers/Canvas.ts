@@ -62,7 +62,8 @@ export default class CanvasController {
 
   drawPath(points: Point[]) {
     if (points.length === 1) {
-      return this.drawPoint(points[0]);
+      const point = points[0];
+      if (point) return this.drawPoint(point);
     }
     points.forEach((point, index, arr) => {
       if (index === arr.length - 1) return;

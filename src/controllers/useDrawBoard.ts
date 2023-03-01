@@ -1,73 +1,61 @@
 import CanvasController, { Point } from './Canvas';
-import Konva from 'konva';
 import { useRef } from 'react';
+import { Vector2d } from 'konva/lib/types';
 
 export type Brush = 'pen' | 'eraser';
 
 export interface BoardController {
-  startDrawing(): void;
+  startDrawing(point: Vector2d): Point | void;
   stopDrawing(): void;
-  draw(pressure?: number): void;
-  undo(): void;
-  redo(): void;
+  draw(from: Vector2d, to: Vector2d, pressure?: number): Point | void;
+  redraw(path: Point[][]): void;
   clean(): void;
   switchColor(color: string): void;
   switchBrush(brush: Brush): void;
 }
 interface Args {
   canvasController: CanvasController | null;
-  stage?: Konva.Stage | null;
-  layer?: Konva.Layer | null;
+  canvasRedraw?(): void;
 }
 
 export default function useDrawBoard({
   canvasController,
-  stage,
-  layer,
+  canvasRedraw,
 }: Args): BoardController {
   const isDrawing = useRef(false);
-  const lastPointerPosition = useRef<Point | null>(null);
-  const history = useRef<Point[][]>([]);
-  const currentHistoryIndex = useRef<number>(-1);
-  const startDrawing = () => {
+
+  const startDrawing = (point: Vector2d) => {
     isDrawing.current = true;
     const style = canvasController?.style;
-    const pos = stage?.getPointerPosition() || null;
-    if (style && pos) {
-      lastPointerPosition.current = {
-        ...pos,
+    if (style) {
+      const lastPointerPosition = {
+        ...point,
         ...style,
       };
-      canvasController?.drawPoint(lastPointerPosition.current);
-      layer?.batchDraw();
-      currentHistoryIndex.current++;
-      history.current.splice(
-        currentHistoryIndex.current,
-        history.current.length,
-        [lastPointerPosition.current]
-      );
+      canvasController?.drawPoint(lastPointerPosition);
+      canvasRedraw?.();
+      return lastPointerPosition;
     }
   };
 
-  const draw = (pressure = 0.5) => {
+  const draw = (from: Vector2d, to: Vector2d, pressure = 0.5) => {
     if (!isDrawing.current) {
       return;
     }
-    if (lastPointerPosition.current && stage) {
+    if (canvasController) {
       const style = canvasController?.style;
-      let localPos = lastPointerPosition.current;
-      const coordinates = stage.getPointerPosition();
-      if (coordinates && style) {
-        const point: Point = {
-          ...coordinates,
-          ...style,
-          lineWidth: pressure * 10,
-        };
-        canvasController?.drawLine(localPos, point);
-        lastPointerPosition.current = point;
-        history.current[history.current.length - 1].push(point);
-        layer?.batchDraw();
-      }
+      let localPos: Point = {
+        ...style,
+        ...from,
+      };
+      const point: Point = {
+        ...to,
+        ...style,
+        lineWidth: pressure * 10,
+      };
+      canvasController?.drawLine(localPos, point);
+      canvasRedraw?.();
+      return point;
     }
   };
 
@@ -75,49 +63,36 @@ export default function useDrawBoard({
     isDrawing.current = false;
   };
 
-  const undo = () => {
-    if (currentHistoryIndex.current < 0) return;
+  const redraw = (path: Point[][]) => {
     canvasController?.clean();
-    history.current
-      .slice(0, currentHistoryIndex.current)
-      .forEach((pointArr) => canvasController?.drawPath(pointArr));
-    currentHistoryIndex.current--;
-    layer?.batchDraw();
-  };
-
-  const redo = () => {
-    if (currentHistoryIndex.current >= history.current.length - 1) return;
-    canvasController?.clean();
-    currentHistoryIndex.current++;
-    history.current
-      .slice(0, currentHistoryIndex.current + 1)
-      .forEach((pointArr) => canvasController?.drawPath(pointArr));
-    layer?.batchDraw();
+    path.forEach((point) => canvasController?.drawPath(point));
+    canvasRedraw?.();
   };
 
   const clean = () => {
     canvasController?.clean();
-    history.current = [];
-    currentHistoryIndex.current = -1;
-    layer?.batchDraw();
+    canvasRedraw?.();
   };
 
   const switchColor = (color: string) => {
-    canvasController!.style = { strokeStyle: color };
+    if (canvasController) {
+      canvasController.style = { strokeStyle: color };
+    }
   };
 
   const switchBrush = (brush: 'pen' | 'eraser') => {
-    canvasController!.style = {
-      globalCompositeOperation: getGcoByBrushType(brush),
-    };
+    if (canvasController) {
+      canvasController.style = {
+        globalCompositeOperation: getGcoByBrushType(brush),
+      };
+    }
   };
 
   return {
     startDrawing,
     draw,
     stopDrawing,
-    undo,
-    redo,
+    redraw,
     switchColor,
     switchBrush,
     clean,
