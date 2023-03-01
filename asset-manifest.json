@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/sketch-book/static/css/main.e6c13ad2.css",
+    "main.js": "/sketch-book/static/js/main.76047459.js",
+    "static/js/787.cada1008.chunk.js": "/sketch-book/static/js/787.cada1008.chunk.js",
+    "index.html": "/sketch-book/index.html",
+    "main.e6c13ad2.css.map": "/sketch-book/static/css/main.e6c13ad2.css.map",
+    "main.76047459.js.map": "/sketch-book/static/js/main.76047459.js.map",
+    "787.cada1008.chunk.js.map": "/sketch-book/static/js/787.cada1008.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.76047459.js"
+  ]
+}
