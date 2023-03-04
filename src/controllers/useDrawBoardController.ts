@@ -1,8 +1,7 @@
 import CanvasController, { Point } from './Canvas';
 import { useRef } from 'react';
 import { Vector2d } from 'konva/lib/types';
-
-export type Brush = 'pen' | 'eraser';
+import { Brush, LINE_WIDTH_THIN } from '../constants/board';
 
 export interface BoardController {
   startDrawing(point: Vector2d): Point | void;
@@ -12,21 +11,26 @@ export interface BoardController {
   clean(): void;
   switchColor(color: string): void;
   switchBrush(brush: Brush): void;
+  switchWidth(width: number): void;
 }
 interface Args {
   canvasController: CanvasController | null;
   canvasRedraw?(): void;
 }
 
-export default function useDrawBoard({
+export default function useDrawBoardController({
   canvasController,
   canvasRedraw,
 }: Args): BoardController {
   const isDrawing = useRef(false);
+  const brushWidth = useRef(
+    canvasController?.style.lineWidth || LINE_WIDTH_THIN
+  );
 
   const startDrawing = (point: Vector2d) => {
     isDrawing.current = true;
     const style = canvasController?.style;
+    console.log(style);
     if (style) {
       const lastPointerPosition = {
         ...point,
@@ -38,7 +42,7 @@ export default function useDrawBoard({
     }
   };
 
-  const draw = (from: Vector2d, to: Vector2d, pressure = 0.5) => {
+  const draw = (from: Vector2d, to: Vector2d, pressure = 0.1) => {
     if (!isDrawing.current) {
       return;
     }
@@ -51,7 +55,7 @@ export default function useDrawBoard({
       const point: Point = {
         ...to,
         ...style,
-        lineWidth: pressure * 10,
+        lineWidth: brushWidth.current * pressure * 10,
       };
       canvasController?.drawLine(localPos, point);
       canvasRedraw?.();
@@ -80,11 +84,20 @@ export default function useDrawBoard({
     }
   };
 
-  const switchBrush = (brush: 'pen' | 'eraser') => {
+  const switchBrush = (brush: Brush) => {
     if (canvasController) {
       canvasController.style = {
         globalCompositeOperation: getGcoByBrushType(brush),
       };
+    }
+  };
+
+  const switchWidth = (width: number) => {
+    if (canvasController) {
+      canvasController.style = {
+        lineWidth: width,
+      };
+      brushWidth.current = width;
     }
   };
 
@@ -95,15 +108,16 @@ export default function useDrawBoard({
     redraw,
     switchColor,
     switchBrush,
+    switchWidth,
     clean,
   };
 }
 
 function getGcoByBrushType(brush: Brush): GlobalCompositeOperation {
   switch (brush) {
-    case 'pen':
+    case Brush.PEN:
       return 'source-over';
-    case 'eraser':
+    case Brush.ERASER:
       return 'destination-out';
   }
 }

@@ -1,4 +1,5 @@
 import { Vector2d } from 'konva/lib/types';
+import { LINE_WIDTH_THIN } from '../constants/board';
 
 interface ICanvasConstructor {
   width: number;
@@ -21,7 +22,7 @@ export default class CanvasController {
     this._canvas.width = width;
     this._canvas.height = height;
     this._context = this._canvas.getContext('2d');
-    this.context.lineWidth = 5;
+    this.context.lineWidth = LINE_WIDTH_THIN;
     this.context.lineJoin = 'round';
   }
 
