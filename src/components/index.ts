@@ -1,3 +1,9 @@
 export { default as DrawBoard } from './DrawBoard';
 export { default as Editor } from './Editor';
 export { default as Toolbox } from './Toolbox';
+export { default as ColorPicker } from './ColorPicker';
+export { default as RedrawConrols } from './RedrawControls';
+export { default as Settings } from './Settings';
+export { default as RangeInput } from './RangeInput';
+export { default as LineWidthPicker } from './LineWidthPicker';
+export { default as BrushPicker } from './BrushPicker';

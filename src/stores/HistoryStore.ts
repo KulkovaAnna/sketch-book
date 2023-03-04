@@ -2,13 +2,17 @@ import { makeAutoObservable } from 'mobx';
 import { createContext } from 'react';
 import { Point } from '../controllers/Canvas';
 
-type ActionType = 'drawing' | 'addShape';
+type ActionType = 'drawing' | 'addShape' | 'clean';
 
-type HistoryDrawingPayload = Point[];
+export type HistoryDrawingPayload = Point[];
 
 export interface HistoryElement<T = ActionType> {
   type: T;
-  payload: T extends 'drawing' ? HistoryDrawingPayload : {};
+  payload: T extends 'drawing'
+    ? HistoryDrawingPayload
+    : T extends 'clean'
+    ? null
+    : {};
 }
 
 type History = HistoryElement[];
@@ -40,7 +44,7 @@ export class HistoryStore {
   redo() {
     if (this.historyPosition >= this.fullHistory.length - 1) return;
     this.historyPosition++;
-    return this.fullHistory[this.historyPosition - 1];
+    return this.fullHistory[this.historyPosition];
   }
 
   undo() {
