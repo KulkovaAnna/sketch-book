@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { createContext } from 'react';
-import { Point } from '../controllers/Canvas';
+import { Point } from 'controllers/CanvasController';
 
 type ActionType = 'drawing' | 'addShape' | 'clean';
 

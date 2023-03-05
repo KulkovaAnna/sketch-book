@@ -1,14 +1,17 @@
 import { FC, memo, useContext } from 'react';
-import ThemeContext from '../../stores/ThemeStore';
-import { RoundArrow } from '../icons';
+import ThemeContext from 'stores/ThemeStore';
+import { RoundArrow } from 'icons';
 import { Container, IconButton, Redo } from './styles';
 
-interface Props {
+export interface RedrawControlsProps {
   onUndoClick?(): void;
   onRedoClick?(): void;
 }
 
-const RedrawConrols: FC<Props> = ({ onRedoClick, onUndoClick }) => {
+const RedrawConrols: FC<RedrawControlsProps> = ({
+  onRedoClick,
+  onUndoClick,
+}) => {
   const theme = useContext(ThemeContext);
   const Arrow = memo(() => <RoundArrow color={theme.style.iconsColor} />);
   return (

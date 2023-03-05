@@ -1,7 +1,7 @@
-import CanvasController, { Point } from './Canvas';
+import CanvasController, { Point } from './CanvasController';
 import { useRef } from 'react';
 import { Vector2d } from 'konva/lib/types';
-import { Brush, LINE_WIDTH_THIN } from '../constants/board';
+import { Brush, LINE_WIDTH_THIN } from 'constants/board';
 
 export interface BoardController {
   startDrawing(point: Vector2d, pressure?: number): Point | void;

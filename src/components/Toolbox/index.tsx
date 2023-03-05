@@ -1,58 +1,44 @@
-import { FC, useContext } from 'react';
-import { PickerColor } from '../../constants/colors';
-import { Brush, LineWidth } from '../../constants/board';
-import ThemeContext from '../../stores/ThemeStore';
-import ColorPicker from '../ColorPicker';
-import LineWidthPicker from '../LineWidthPicker';
-import RedrawConrols from '../RedrawControls';
-import Settings from '../Settings';
+import { FC, PropsWithChildren, ReactElement, useContext } from 'react';
+import ThemeContext from 'stores/ThemeStore';
+import ColorPicker, { ColorPickerProps } from './ColorPicker';
+import LineWidthPicker, { LineWidthPickerProps } from './LineWidthPicker';
+import RedrawConrols, { RedrawControlsProps } from './RedrawControls';
+import Settings from './Settings';
 import { Container, Divider, LeftPanel, RightPanel } from './styles';
-import BrushPicker from '../BrushPicker';
+import BrushPicker, { BrushPickerProps } from './BrushPicker';
 
+type Child = ReactElement<
+  | BrushPickerProps
+  | RedrawControlsProps
+  | ColorPickerProps
+  | LineWidthPickerProps
+>;
+
+interface ToolboxComponent extends FC<PropsWithChildren<ToolboxProps>> {
+  BrushPicker: FC<BrushPickerProps>;
+  RedrawControls: FC<RedrawControlsProps>;
+  ColorPicker: FC<ColorPickerProps>;
+  LineWidthPicker: FC<LineWidthPickerProps>;
+}
 interface ToolboxProps {
-  onUndoClick(): void;
-  onRedoClick(): void;
   onClearClick(): void;
-  selectedColor?: PickerColor;
-  onColorSelect?(color: string): void;
-  selectedLineWidth?: LineWidth;
-  onLineWidthSelect?(width: LineWidth): void;
-  selectedBrush?: Brush;
-  onBrushSelect?(brush: Brush): void;
+  children?: Child | Child[];
 }
 
-const Toolbox: FC<ToolboxProps> = ({
-  onClearClick,
-  onRedoClick,
-  onUndoClick,
-  onColorSelect,
-  selectedColor,
-  selectedLineWidth,
-  onLineWidthSelect,
-  selectedBrush,
-  onBrushSelect,
-}) => {
+const Toolbox: ToolboxComponent = ({ onClearClick, children }) => {
   const theme = useContext(ThemeContext);
   const divider = <Divider theme={theme.style} />;
   return (
     <Container>
       <LeftPanel>
-        <RedrawConrols onRedoClick={onRedoClick} onUndoClick={onUndoClick} />
-        {divider}
-        <ColorPicker
-          selectedColor={selectedColor || PickerColor.BLACK}
-          onColorSelect={onColorSelect}
-        />
-        {divider}
-        <LineWidthPicker
-          selectedWidth={selectedLineWidth || LineWidth.THIN}
-          onWidthSelect={onLineWidthSelect}
-        />
-        {divider}
-        <BrushPicker
-          selectedBrush={selectedBrush}
-          onBrushSelect={onBrushSelect}
-        />
+        {Array.isArray(children)
+          ? children.map((child) => (
+              <>
+                {child}
+                {divider}
+              </>
+            ))
+          : children}
       </LeftPanel>
       <RightPanel>
         <Settings onBinClick={onClearClick} />
@@ -60,5 +46,10 @@ const Toolbox: FC<ToolboxProps> = ({
     </Container>
   );
 };
+
+Toolbox.BrushPicker = BrushPicker;
+Toolbox.RedrawControls = RedrawConrols;
+Toolbox.ColorPicker = ColorPicker;
+Toolbox.LineWidthPicker = LineWidthPicker;
 
 export default Toolbox;

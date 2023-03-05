@@ -5,15 +5,14 @@ import {
   FC,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
 import { Stage, Layer } from 'react-konva';
-import CanvasController from '../../controllers/Canvas';
-import useDrawBoardController from '../../controllers/useDrawBoardController';
-import HistoryContext from '../../stores/HistoryStore';
-import ThemeContext from '../../stores/ThemeStore';
+import CanvasController from 'controllers/CanvasController';
+import useDrawBoardController from 'controllers/useDrawBoardController';
+import HistoryContext from 'stores/HistoryStore';
+import ThemeContext from 'stores/ThemeStore';
 import DrawBoard from '../DrawBoard';
 import Toolbox from '../Toolbox';
 import { Container, ToolboxContainer } from './styles';
@@ -24,9 +23,14 @@ interface Props {
   style?: CSSProperties;
 }
 
+// eslint-disable-next-line no-restricted-globals
+const { width, height } = screen;
+const canvasController = new CanvasController({
+  width,
+  height,
+});
+
 const Editor: FC<Props> = observer(({ style }) => {
-  // eslint-disable-next-line no-restricted-globals
-  const { width, height } = screen;
   const historyStore = useContext(HistoryContext);
   const layer = useRef<Konva.Layer>(null);
   const stage = useRef<Konva.Stage>(null);
@@ -38,15 +42,6 @@ const Editor: FC<Props> = observer(({ style }) => {
       setStateLayer(layer.current);
     }
   }, []);
-
-  const canvasController = useMemo(
-    () =>
-      new CanvasController({
-        width,
-        height,
-      }),
-    [height, width]
-  );
 
   const boardController = useDrawBoardController({
     canvasController,
@@ -92,17 +87,21 @@ const Editor: FC<Props> = observer(({ style }) => {
   return (
     <Container style={style} theme={theme.style}>
       <ToolboxContainer theme={theme.style}>
-        <Toolbox
-          onClearClick={clear}
-          onRedoClick={redo}
-          onUndoClick={undo}
-          onColorSelect={switchColor}
-          selectedColor={brushColor}
-          selectedLineWidth={brushWidth}
-          onLineWidthSelect={onWidthSwitch}
-          selectedBrush={brush}
-          onBrushSelect={onBrushSwitch}
-        />
+        <Toolbox onClearClick={clear}>
+          <Toolbox.RedrawControls onRedoClick={redo} onUndoClick={undo} />
+          <Toolbox.ColorPicker
+            selectedColor={brushColor}
+            onColorSelect={switchColor}
+          />
+          <Toolbox.LineWidthPicker
+            selectedWidth={brushWidth}
+            onWidthSelect={onWidthSwitch}
+          />
+          <Toolbox.BrushPicker
+            selectedBrush={brush}
+            onBrushSelect={onBrushSwitch}
+          />
+        </Toolbox>
       </ToolboxContainer>
       <Stage
         ref={stage}
@@ -110,7 +109,6 @@ const Editor: FC<Props> = observer(({ style }) => {
         height={height}
         style={{
           backgroundColor: theme.style.bacgroundColor,
-          overflow: 'hidden',
         }}
       >
         <Layer ref={layer}>

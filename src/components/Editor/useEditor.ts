@@ -1,6 +1,7 @@
+import Konva from 'konva';
+import { LS_STAGE } from '../../constants/localStorage';
 import { BoardController } from '../../controllers/useDrawBoardController';
 import { HistoryElement, HistoryStore } from '../../stores/HistoryStore';
-
 interface Args {
   boardController: BoardController;
   historyStore: HistoryStore;
@@ -41,9 +42,31 @@ export default function useEditor({ boardController, historyStore }: Args) {
     historyStore.addHistoryPoint({ type: 'clean', payload: null });
   };
 
+  const saveStage = (stage: Konva.Stage) => {
+    const uri = stage.toDataURL();
+    localStorage.setItem(LS_STAGE, uri);
+  };
+
+  const getSavedStage = () => {
+    localStorage.getItem(LS_STAGE);
+  };
+
+  const exportAsImage = (stage: Konva.Stage) => {
+    const uri = stage.toDataURL();
+    const link = document.createElement('a');
+    link.download = 'dear-diary.png';
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return {
     undo,
     redo,
     clear,
+    saveStage,
+    getSavedStage,
+    exportAsImage,
   };
 }

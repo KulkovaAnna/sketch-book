@@ -1,5 +1,5 @@
 import { Vector2d } from 'konva/lib/types';
-import { LINE_WIDTH_THIN } from '../constants/board';
+import { LINE_WIDTH_THIN } from 'constants/board';
 
 interface ICanvasConstructor {
   width: number;

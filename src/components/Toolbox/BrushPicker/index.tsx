@@ -1,11 +1,13 @@
 import { FC, useContext } from 'react';
-import { Eraser, Pen } from '../icons';
-import ExpandingPicker, { ExpandingPickerRenderItem } from '../ExpandingPicker';
+import { Eraser, Pen } from 'icons';
+import ExpandingPicker, {
+  ExpandingPickerRenderItem,
+} from 'components/ExpandingPicker';
 import { Circle } from './styles';
-import { Brush } from '../../constants/board';
-import ThemeContext from '../../stores/ThemeStore';
+import { Brush } from 'constants/board';
+import ThemeContext from 'stores/ThemeStore';
 
-interface Props {
+export interface BrushPickerProps {
   onBrushSelect?(brush: Brush): void;
   selectedBrush?: Brush;
 }
@@ -49,7 +51,10 @@ const renderItem: ExpandingPickerRenderItem<Brush> = ({
 }) => <Option brush={value} isSelected={isSelected} onClick={onClick} />;
 
 const values = Object.values(Brush);
-const BrushPicker: FC<Props> = ({ onBrushSelect, selectedBrush }) => {
+const BrushPicker: FC<BrushPickerProps> = ({
+  onBrushSelect,
+  selectedBrush,
+}) => {
   return (
     <ExpandingPicker
       values={values}

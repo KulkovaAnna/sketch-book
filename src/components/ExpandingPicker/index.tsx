@@ -1,6 +1,6 @@
 import { Fragment, Key, ReactNode, useContext, useState } from 'react';
-import ThemeContext from '../../stores/ThemeStore';
-import { ChevronLeft, ChevronRight } from '../icons';
+import ThemeContext from 'stores/ThemeStore';
+import { ChevronLeft, ChevronRight } from 'icons';
 import { CloseButton, Container } from './styles';
 
 export type ExpandingPickerRenderItem<T> = (args: OptionProps<T>) => ReactNode;

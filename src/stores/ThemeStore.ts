@@ -1,6 +1,7 @@
-import { darkTheme, lightTheme } from '../constants/themes';
+import { darkTheme, lightTheme } from 'constants/themes';
 import { makeAutoObservable } from 'mobx';
 import { createContext } from 'react';
+import { LS_THEME } from 'constants/localStorage';
 
 export type Theme = 'light' | 'dark';
 
@@ -14,7 +15,7 @@ export interface ThemeObject {
 export class ThemeStore {
   curentTheme: Theme = 'light';
   constructor() {
-    this.curentTheme = (localStorage.getItem('theme') as Theme) || 'light';
+    this.curentTheme = (localStorage.getItem(LS_THEME) as Theme) || 'light';
     makeAutoObservable(this);
   }
 

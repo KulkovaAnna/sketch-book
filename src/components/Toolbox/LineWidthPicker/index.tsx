@@ -1,11 +1,13 @@
 import { FC, useContext } from 'react';
-import { LineWidth } from '../../constants/board';
-import ThemeContext from '../../stores/ThemeStore';
-import { CurveLine } from '../icons';
-import ExpandingPicker, { ExpandingPickerRenderItem } from '../ExpandingPicker';
+import { LineWidth } from 'constants/board';
+import ThemeContext from 'stores/ThemeStore';
+import { CurveLine } from 'icons';
+import ExpandingPicker, {
+  ExpandingPickerRenderItem,
+} from 'components/ExpandingPicker';
 import { Circle } from './styles';
 
-interface Props {
+export interface LineWidthPickerProps {
   onWidthSelect?(width: LineWidth): void;
   selectedWidth: LineWidth;
 }
@@ -41,7 +43,10 @@ const renderItem: ExpandingPickerRenderItem<LineWidth> = ({
   onClick,
 }) => <Option width={value} isSelected={isSelected} onClick={onClick} />;
 
-const LineWidthPicker: FC<Props> = ({ selectedWidth, onWidthSelect }) => {
+const LineWidthPicker: FC<LineWidthPickerProps> = ({
+  selectedWidth,
+  onWidthSelect,
+}) => {
   return (
     <ExpandingPicker
       values={values as LineWidth[]}

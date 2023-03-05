@@ -1,10 +1,8 @@
-/* eslint-disable no-restricted-globals */
-//change theme, clean board, fullscreen
-
 import { FC, useContext, useEffect, useRef, useState } from 'react';
-import ThemeContext from '../../stores/ThemeStore';
-import { Bin, Fullscreen, Gear, Minimize, Moon, Sun } from '../icons';
+import ThemeContext from 'stores/ThemeStore';
+import { Bin, Fullscreen, Gear, Minimize, Moon, Sun } from 'icons';
 import { Container, Dropdown, IconButton, Line } from './styles';
+import useSettings from './useSettings';
 
 interface Props {
   onBinClick?(): void;
@@ -12,46 +10,36 @@ interface Props {
 
 const Settings: FC<Props> = ({ onBinClick }) => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [isFullScreen, setIsFullScreen] = useState(checkFullScreen());
   const ref = useRef<HTMLDivElement>(null);
   const theme = useContext(ThemeContext);
+
+  const { isFullScreen, switchScreenMode, switchTheme } = useSettings();
+
+  const hideDropdown = () => setShowDropdown(false);
+
   const handleBinClick = () => {
     onBinClick?.();
-    setShowDropdown(false);
+    hideDropdown();
   };
   const onGearClick = () => {
     setShowDropdown((prev) => !prev);
   };
-  const handleSwitchTheme = () => {
-    theme.switchTheme();
-    localStorage.setItem('theme', theme.curentTheme);
-    setShowDropdown(false);
+  const handleSwitchThemeClick = () => {
+    switchTheme();
+    hideDropdown();
   };
-  const switchScreenMode = () => {
-    if (isFullScreen) {
-      try {
-        document.exitFullscreen();
-      } catch {
-        document.body.requestFullscreen().then(() => document.exitFullscreen());
-      }
-    } else {
-      document.body.requestFullscreen();
-    }
-    setShowDropdown(false);
+  const handleScreenModeClick = () => {
+    switchScreenMode();
+    hideDropdown();
   };
   useEffect(() => {
-    const resizeListener = () => {
-      setIsFullScreen(checkFullScreen());
-    };
     const clickListener = (ev: MouseEvent | TouchEvent) => {
       if (ev.target !== ref.current) {
         setShowDropdown(false);
       }
     };
-    window.addEventListener('resize', resizeListener);
     document.addEventListener('pointerdown', clickListener);
     return () => {
-      window.removeEventListener('resize', resizeListener);
       document.removeEventListener('pointerdown', clickListener);
     };
   }, []);
@@ -69,7 +57,10 @@ const Settings: FC<Props> = ({ onBinClick }) => {
             <Bin color={theme.style.iconsColor} />
           </IconButton>
           <Line style={{ backgroundColor: theme.style.iconsColor }} />
-          <IconButton onClick={handleSwitchTheme} title="Switch color theme">
+          <IconButton
+            onClick={handleSwitchThemeClick}
+            title="Switch color theme"
+          >
             {theme.curentTheme === 'dark' ? (
               <Sun color={theme.style.iconsColor} />
             ) : (
@@ -77,7 +68,7 @@ const Settings: FC<Props> = ({ onBinClick }) => {
             )}
           </IconButton>
           <IconButton
-            onClick={switchScreenMode}
+            onClick={handleScreenModeClick}
             title={isFullScreen ? 'Minimize' : 'Fullscreen'}
           >
             {isFullScreen ? (
@@ -93,9 +84,3 @@ const Settings: FC<Props> = ({ onBinClick }) => {
 };
 
 export default Settings;
-
-function checkFullScreen() {
-  return (
-    window.innerWidth === screen.width && window.innerHeight === screen.height
-  );
-}

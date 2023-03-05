@@ -3,7 +3,7 @@ import { KonvaEventObject } from 'konva/lib/Node';
 import { useRef, useState } from 'react';
 import { Brush, LINE_WIDTH_THIN } from '../../constants/board';
 import { PickerColor } from '../../constants/colors';
-import { Point } from '../../controllers/Canvas';
+import { Point } from '../../controllers/CanvasController';
 import { BoardController } from '../../controllers/useDrawBoardController';
 import { HistoryStore } from '../../stores/HistoryStore';
 
