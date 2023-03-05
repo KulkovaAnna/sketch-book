@@ -76,10 +76,8 @@ const Editor: FC<Props> = observer(({ style }) => {
       if (ev.code === 'KeyZ') {
         if (ev.ctrlKey) {
           if (ev.shiftKey) {
-            console.log('redo');
             redo();
           } else {
-            console.log('undo');
             undo();
           }
         }

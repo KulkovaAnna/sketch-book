@@ -4,7 +4,7 @@ import { Vector2d } from 'konva/lib/types';
 import { Brush, LINE_WIDTH_THIN } from '../constants/board';
 
 export interface BoardController {
-  startDrawing(point: Vector2d): Point | void;
+  startDrawing(point: Vector2d, pressure?: number): Point | void;
   stopDrawing(): void;
   draw(from: Vector2d, to: Vector2d, pressure?: number): Point | void;
   redraw(path: Point[][]): void;
@@ -27,14 +27,14 @@ export default function useDrawBoardController({
     canvasController?.style.lineWidth || LINE_WIDTH_THIN
   );
 
-  const startDrawing = (point: Vector2d) => {
+  const startDrawing = (point: Vector2d, pressure = 1) => {
     isDrawing.current = true;
     const style = canvasController?.style;
-    console.log(style);
     if (style) {
       const lastPointerPosition = {
         ...point,
         ...style,
+        lineWidth: style.lineWidth * pressure,
       };
       canvasController?.drawPoint(lastPointerPosition);
       canvasRedraw?.();
@@ -42,7 +42,7 @@ export default function useDrawBoardController({
     }
   };
 
-  const draw = (from: Vector2d, to: Vector2d, pressure = 0.1) => {
+  const draw = (from: Vector2d, to: Vector2d, pressure = 1) => {
     if (!isDrawing.current) {
       return;
     }
@@ -55,7 +55,7 @@ export default function useDrawBoardController({
       const point: Point = {
         ...to,
         ...style,
-        lineWidth: brushWidth.current * pressure * 10,
+        lineWidth: brushWidth.current * pressure,
       };
       canvasController?.drawLine(localPos, point);
       canvasRedraw?.();
