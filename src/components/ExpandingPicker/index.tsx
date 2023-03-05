@@ -1,4 +1,4 @@
-import { ReactNode, useContext, useState } from 'react';
+import { Fragment, Key, ReactNode, useContext, useState } from 'react';
 import ThemeContext from '../../stores/ThemeStore';
 import { ChevronLeft, ChevronRight } from '../icons';
 import { CloseButton, Container } from './styles';
@@ -31,13 +31,15 @@ function ExpandingPicker<T>({
   };
   return (
     <Container>
-      {values.slice(0, isOpened ? undefined : 1).map((value, index) =>
-        renderItem({
-          value: isOpened ? value : values[selectedElementIndex],
-          isSelected: isOpened ? index === selectedElementIndex : true,
-          onClick: onSelect,
-        })
-      )}
+      {values.slice(0, isOpened ? undefined : 1).map((value, index) => (
+        <Fragment key={value as Key}>
+          {renderItem({
+            value: isOpened ? value : values[selectedElementIndex],
+            isSelected: isOpened ? index === selectedElementIndex : true,
+            onClick: onSelect,
+          })}
+        </Fragment>
+      ))}
       <CloseButton
         style={{ borderColor: theme.style.fontColor }}
         onClick={onChevronClick}

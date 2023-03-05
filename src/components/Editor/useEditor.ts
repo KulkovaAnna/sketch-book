@@ -10,9 +10,9 @@ export default function useEditor({ boardController, historyStore }: Args) {
   const redraw = (type: 'redo' | 'undo') => {
     const historyPoint =
       type === 'undo' ? historyStore.undo() : historyStore.redo();
-    const lastClean = historyStore.currentHistory.findIndex(
-      (p) => p.type === 'clean'
-    );
+    const lastClean: number = (
+      historyStore.currentHistory as any
+    ).findLastIndex((p: HistoryElement) => p.type === 'clean');
     const fullRedraw = () => {
       boardController.redraw(
         historyStore.currentHistory

@@ -4,15 +4,15 @@ import { KonvaEventObject } from 'konva/lib/Node';
 
 interface Props {
   canvas: HTMLCanvasElement;
-  onStartDraw?(): void;
+  onStartDraw?(evt: KonvaEventObject<PointerEvent>): void;
   onDraw?(evt: KonvaEventObject<PointerEvent>): void;
   onStopDraw?(): void;
 }
 
 const DrawBoard: FC<Props> = ({ onDraw, onStartDraw, onStopDraw, canvas }) => {
-  const onMouseDown = ({ evt }: KonvaEventObject<MouseEvent>) => {
-    if (evt.button === 0) {
-      onStartDraw?.();
+  const onMouseDown = (ev: KonvaEventObject<PointerEvent>) => {
+    if (ev.evt.button === 0) {
+      onStartDraw?.(ev);
     }
   };
   return (
@@ -20,8 +20,7 @@ const DrawBoard: FC<Props> = ({ onDraw, onStartDraw, onStopDraw, canvas }) => {
       image={canvas}
       x={0}
       y={0}
-      onMouseDown={onMouseDown}
-      onTouchStart={onStartDraw}
+      onPointerDown={onMouseDown}
       onMouseUp={onStopDraw}
       onTouchEnd={onStopDraw}
       onMouseLeave={onStopDraw}

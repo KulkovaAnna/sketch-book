@@ -24,13 +24,14 @@ export default function useBoard({
 
   const line = useRef<Point[]>([]);
 
-  const onStartDraw = () => {
+  const onStartDraw = ({ evt }: KonvaEventObject<PointerEvent>) => {
     onColorSwitch(brushColor);
     onWidthSwitch(brushWidth);
     onBrushSwitch(brush);
     const pointerPos = stage?.getPointerPosition();
+    const pressure = evt.pointerType === 'pen' ? evt.pressure : 1;
     if (pointerPos) {
-      const point = boardController.startDrawing(pointerPos);
+      const point = boardController.startDrawing(pointerPos, pressure);
       if (point) {
         line.current.push(point);
       }
@@ -38,7 +39,7 @@ export default function useBoard({
   };
 
   const onDraw = ({ evt }: KonvaEventObject<PointerEvent>) => {
-    const pressure = evt.pointerType === 'pen' ? evt.pressure : 0.1;
+    const pressure = evt.pointerType === 'pen' ? evt.pressure : 1;
     const fromPos = line.current.at(-1);
     const toPos = stage?.getPointerPosition();
     if (fromPos && toPos) {
