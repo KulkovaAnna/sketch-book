@@ -1,4 +1,6 @@
 import Konva from 'konva';
+import { useContext } from 'react';
+import ThemeContext from 'stores/ThemeStore';
 import { LS_STAGE } from '../../constants/localStorage';
 import { BoardController } from '../../controllers/useDrawBoardController';
 import { HistoryElement, HistoryStore } from '../../stores/HistoryStore';
@@ -8,6 +10,7 @@ interface Args {
 }
 
 export default function useEditor({ boardController, historyStore }: Args) {
+  const theme = useContext(ThemeContext);
   const redraw = (type: 'redo' | 'undo') => {
     const historyPoint =
       type === 'undo' ? historyStore.undo() : historyStore.redo();
@@ -52,6 +55,11 @@ export default function useEditor({ boardController, historyStore }: Args) {
   };
 
   const exportAsImage = (stage: Konva.Stage) => {
+    boardController.fillCanvas(theme.style.bacgroundColor);
+    const arr = historyStore.currentHistory
+      .filter((hp) => hp.type === 'drawing')
+      .map((hp) => (hp as HistoryElement<'drawing'>).payload);
+    boardController.redraw(arr, true);
     const uri = stage.toDataURL();
     const link = document.createElement('a');
     link.download = 'dear-diary.png';
@@ -59,6 +67,7 @@ export default function useEditor({ boardController, historyStore }: Args) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    boardController.redraw(arr, false);
   };
 
   return {

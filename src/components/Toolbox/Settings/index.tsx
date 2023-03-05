@@ -1,14 +1,15 @@
 import { FC, useContext, useEffect, useRef, useState } from 'react';
 import ThemeContext from 'stores/ThemeStore';
-import { Bin, Fullscreen, Gear, Minimize, Moon, Sun } from 'icons';
+import { Bin, Download, Fullscreen, Gear, Minimize, Moon, Sun } from 'icons';
 import { Container, Dropdown, IconButton, Line } from './styles';
 import useSettings from './useSettings';
 
-interface Props {
+export interface SettingsProps {
   onBinClick?(): void;
+  onDownloadlick?(): void;
 }
 
-const Settings: FC<Props> = ({ onBinClick }) => {
+const Settings: FC<SettingsProps> = ({ onBinClick, onDownloadlick }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const theme = useContext(ThemeContext);
@@ -76,6 +77,9 @@ const Settings: FC<Props> = ({ onBinClick }) => {
             ) : (
               <Fullscreen color={theme.style.iconsColor} />
             )}
+          </IconButton>
+          <IconButton onClick={onDownloadlick}>
+            <Download style={{ width: 40 }} color={theme.style.iconsColor} />
           </IconButton>
         </Dropdown>
       )}

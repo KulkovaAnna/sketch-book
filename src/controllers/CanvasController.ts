@@ -24,6 +24,7 @@ export default class CanvasController {
     this._context = this._canvas.getContext('2d');
     this.context.lineWidth = LINE_WIDTH_THIN;
     this.context.lineJoin = 'round';
+    this.canvas.style.backgroundColor = 'red';
   }
 
   get canvas() {
@@ -74,6 +75,11 @@ export default class CanvasController {
 
   clean() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  fill(color: string) {
+    this.context.fillStyle = color;
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   set style(style: CanvasStyle) {

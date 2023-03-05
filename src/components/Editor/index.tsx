@@ -64,7 +64,14 @@ const Editor: FC<Props> = observer(({ style }) => {
     stage: stage.current,
   });
 
-  const { undo, redo, clear } = useEditor({ boardController, historyStore });
+  const { undo, redo, clear, exportAsImage } = useEditor({
+    boardController,
+    historyStore,
+  });
+
+  const onDownloadClick = () => {
+    if (stage.current) exportAsImage(stage.current);
+  };
 
   useEffect(() => {
     const keyListener = (ev: KeyboardEvent) => {
@@ -87,7 +94,7 @@ const Editor: FC<Props> = observer(({ style }) => {
   return (
     <Container style={style} theme={theme.style}>
       <ToolboxContainer theme={theme.style}>
-        <Toolbox onClearClick={clear}>
+        <Toolbox onBinClick={clear} onDownloadlick={onDownloadClick}>
           <Toolbox.RedrawControls onRedoClick={redo} onUndoClick={undo} />
           <Toolbox.ColorPicker
             selectedColor={brushColor}

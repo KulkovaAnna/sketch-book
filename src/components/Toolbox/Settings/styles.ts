@@ -12,7 +12,7 @@ export const Dropdown = styled.div({
   position: 'fixed',
   top: 75,
   right: 10,
-  padding: 10,
+  padding: '10px 5px 0',
   boxShadow: '-2px 4px 10px rgba(0, 0, 0, 0.2)',
   borderRadius: 4,
   display: 'flex',

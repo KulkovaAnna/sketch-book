@@ -7,11 +7,12 @@ export interface BoardController {
   startDrawing(point: Vector2d, pressure?: number): Point | void;
   stopDrawing(): void;
   draw(from: Vector2d, to: Vector2d, pressure?: number): Point | void;
-  redraw(path: Point[][]): void;
+  redraw(path: Point[][], noClear?: boolean): void;
   clean(): void;
   switchColor(color: string): void;
   switchBrush(brush: Brush): void;
   switchWidth(width: number): void;
+  fillCanvas(color: string): void;
 }
 interface Args {
   canvasController: CanvasController | null;
@@ -67,8 +68,8 @@ export default function useDrawBoardController({
     isDrawing.current = false;
   };
 
-  const redraw = (path: Point[][]) => {
-    canvasController?.clean();
+  const redraw = (path: Point[][], noClear = false) => {
+    if (!noClear) canvasController?.clean();
     path.forEach((point) => canvasController?.drawPath(point));
     canvasRedraw?.();
   };
@@ -101,6 +102,10 @@ export default function useDrawBoardController({
     }
   };
 
+  const fillCanvas = (color: string) => {
+    canvasController?.fill(color);
+  };
+
   return {
     startDrawing,
     draw,
@@ -110,6 +115,7 @@ export default function useDrawBoardController({
     switchBrush,
     switchWidth,
     clean,
+    fillCanvas,
   };
 }
 

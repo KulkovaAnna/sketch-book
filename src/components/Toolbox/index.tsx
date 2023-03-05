@@ -3,7 +3,7 @@ import ThemeContext from 'stores/ThemeStore';
 import ColorPicker, { ColorPickerProps } from './ColorPicker';
 import LineWidthPicker, { LineWidthPickerProps } from './LineWidthPicker';
 import RedrawConrols, { RedrawControlsProps } from './RedrawControls';
-import Settings from './Settings';
+import Settings, { SettingsProps } from './Settings';
 import { Container, Divider, LeftPanel, RightPanel } from './styles';
 import BrushPicker, { BrushPickerProps } from './BrushPicker';
 
@@ -20,12 +20,11 @@ interface ToolboxComponent extends FC<PropsWithChildren<ToolboxProps>> {
   ColorPicker: FC<ColorPickerProps>;
   LineWidthPicker: FC<LineWidthPickerProps>;
 }
-interface ToolboxProps {
-  onClearClick(): void;
+interface ToolboxProps extends SettingsProps {
   children?: Child | Child[];
 }
 
-const Toolbox: ToolboxComponent = ({ onClearClick, children }) => {
+const Toolbox: ToolboxComponent = ({ children, ...rest }) => {
   const theme = useContext(ThemeContext);
   const divider = <Divider theme={theme.style} />;
   return (
@@ -41,7 +40,7 @@ const Toolbox: ToolboxComponent = ({ onClearClick, children }) => {
           : children}
       </LeftPanel>
       <RightPanel>
-        <Settings onBinClick={onClearClick} />
+        <Settings {...rest} />
       </RightPanel>
     </Container>
   );
