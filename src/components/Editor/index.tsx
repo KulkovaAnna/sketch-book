@@ -94,20 +94,28 @@ const Editor: FC<Props> = observer(({ style }) => {
   return (
     <Container style={style} theme={theme.style}>
       <ToolboxContainer theme={theme.style}>
-        <Toolbox onBinClick={clear} onDownloadlick={onDownloadClick}>
-          <Toolbox.RedrawControls onRedoClick={redo} onUndoClick={undo} />
+        <Toolbox onBinClick={clear} onDownloadClick={onDownloadClick}>
+          <Toolbox.RedrawControls
+            key="redraw"
+            onRedoClick={redo}
+            onUndoClick={undo}
+          />
           <Toolbox.ColorPicker
+            key="color-picker"
             selectedColor={brushColor}
             onColorSelect={switchColor}
           />
           <Toolbox.LineWidthPicker
+            key="line-width-picker"
             selectedWidth={brushWidth}
             onWidthSelect={onWidthSwitch}
           />
           <Toolbox.BrushPicker
+            key="brush-picker"
             selectedBrush={brush}
             onBrushSelect={onBrushSwitch}
           />
+          <Toolbox.MediaFilePicker key="media-picker" />
         </Toolbox>
       </ToolboxContainer>
       <Stage

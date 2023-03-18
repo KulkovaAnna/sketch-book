@@ -2,12 +2,14 @@ import { FC, useContext } from 'react';
 import { Eraser, Pen } from 'icons';
 import ExpandingPicker, {
   ExpandingPickerRenderItem,
+  ExpandingPickerRenderItemProps,
 } from 'components/ExpandingPicker';
 import { Circle } from './styles';
-import { Brush } from 'constants/board';
+import { Brush } from 'constants/editor';
 import ThemeContext from 'stores/ThemeStore';
 
-export interface BrushPickerProps {
+export interface BrushPickerProps
+  extends Pick<ExpandingPickerRenderItemProps<Brush>, 'title'> {
   onBrushSelect?(brush: Brush): void;
   selectedBrush?: Brush;
 }
@@ -54,6 +56,7 @@ const values = Object.values(Brush);
 const BrushPicker: FC<BrushPickerProps> = ({
   onBrushSelect,
   selectedBrush,
+  ...rest
 }) => {
   return (
     <ExpandingPicker
@@ -61,6 +64,7 @@ const BrushPicker: FC<BrushPickerProps> = ({
       selectedElementIndex={values.indexOf(selectedBrush || Brush.PEN)}
       onSelect={onBrushSelect}
       renderItem={renderItem}
+      {...rest}
     />
   );
 };

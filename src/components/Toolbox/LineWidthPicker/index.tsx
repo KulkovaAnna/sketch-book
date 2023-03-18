@@ -1,13 +1,15 @@
 import { FC, useContext } from 'react';
-import { LineWidth } from 'constants/board';
+import { LineWidth } from 'constants/editor';
 import ThemeContext from 'stores/ThemeStore';
 import { CurveLine } from 'icons';
 import ExpandingPicker, {
   ExpandingPickerRenderItem,
+  ExpandingPickerRenderItemProps,
 } from 'components/ExpandingPicker';
 import { Circle } from './styles';
 
-export interface LineWidthPickerProps {
+export interface LineWidthPickerProps
+  extends Pick<ExpandingPickerRenderItemProps<LineWidth>, 'title'> {
   onWidthSelect?(width: LineWidth): void;
   selectedWidth: LineWidth;
 }
@@ -46,6 +48,7 @@ const renderItem: ExpandingPickerRenderItem<LineWidth> = ({
 const LineWidthPicker: FC<LineWidthPickerProps> = ({
   selectedWidth,
   onWidthSelect,
+  ...rest
 }) => {
   return (
     <ExpandingPicker
@@ -53,6 +56,7 @@ const LineWidthPicker: FC<LineWidthPickerProps> = ({
       renderItem={renderItem}
       onSelect={onWidthSelect}
       selectedElementIndex={values.indexOf(selectedWidth)}
+      {...rest}
     />
   );
 };

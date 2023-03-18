@@ -1,7 +1,7 @@
 import CanvasController, { Point } from './CanvasController';
 import { useRef } from 'react';
 import { Vector2d } from 'konva/lib/types';
-import { Brush, LINE_WIDTH_THIN } from 'constants/board';
+import { Brush, LineWidth } from 'constants/editor';
 
 export interface BoardController {
   startDrawing(point: Vector2d, pressure?: number): Point | void;
@@ -25,7 +25,7 @@ export default function useDrawBoardController({
 }: Args): BoardController {
   const isDrawing = useRef(false);
   const brushWidth = useRef(
-    canvasController?.style.lineWidth || LINE_WIDTH_THIN
+    canvasController?.style.lineWidth || LineWidth.THIN
   );
 
   const startDrawing = (point: Vector2d, pressure = 1) => {

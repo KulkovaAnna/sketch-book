@@ -1,10 +1,12 @@
 import { FC } from 'react';
-import { PickerColor } from 'constants/colors';
+import { PickerColor } from 'constants/editor';
 import { Checkmark } from 'icons';
 import { ExpandingPicker, ExpandingPickerRenderItem } from 'components';
 import { ColorCircle } from './styles';
+import { ExpandingPickerRenderItemProps } from 'components/ExpandingPicker';
 
-export interface ColorPickerProps {
+export interface ColorPickerProps
+  extends Pick<ExpandingPickerRenderItemProps<PickerColor>, 'title'> {
   onColorSelect?(color: PickerColor): void;
   selectedColor: PickerColor;
 }
@@ -36,6 +38,7 @@ const values = Object.values(PickerColor);
 const ColorPicker: FC<ColorPickerProps> = ({
   onColorSelect,
   selectedColor,
+  ...rest
 }) => {
   return (
     <ExpandingPicker
@@ -43,6 +46,7 @@ const ColorPicker: FC<ColorPickerProps> = ({
       selectedElementIndex={values.indexOf(selectedColor)}
       onSelect={onColorSelect}
       renderItem={renderItem}
+      {...rest}
     />
   );
 };

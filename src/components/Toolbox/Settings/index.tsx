@@ -1,89 +1,54 @@
-import { FC, useContext, useEffect, useRef, useState } from 'react';
+import { FC, useContext } from 'react';
 import ThemeContext from 'stores/ThemeStore';
-import { Bin, Download, Fullscreen, Gear, Minimize, Moon, Sun } from 'icons';
-import { Container, Dropdown, IconButton, Line } from './styles';
+import { Bin, Fullscreen, Gear, Minimize, Moon, Sun } from 'icons';
 import useSettings from './useSettings';
+import { StyledDownload } from './styles';
+import { TIcon } from 'icons/types';
+import IconDropdown from 'components/Dropdown/IconDropdown';
 
 export interface SettingsProps {
   onBinClick?(): void;
-  onDownloadlick?(): void;
+  onDownloadClick?(): void;
 }
 
-const Settings: FC<SettingsProps> = ({ onBinClick, onDownloadlick }) => {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+const Settings: FC<SettingsProps> = ({
+  onBinClick,
+  onDownloadClick: onDownloadlick,
+}) => {
   const theme = useContext(ThemeContext);
 
   const { isFullScreen, switchScreenMode, switchTheme } = useSettings();
 
-  const hideDropdown = () => setShowDropdown(false);
-
-  const handleBinClick = () => {
-    onBinClick?.();
-    hideDropdown();
-  };
-  const onGearClick = () => {
-    setShowDropdown((prev) => !prev);
-  };
-  const handleSwitchThemeClick = () => {
-    switchTheme();
-    hideDropdown();
-  };
-  const handleScreenModeClick = () => {
-    switchScreenMode();
-    hideDropdown();
-  };
-  useEffect(() => {
-    const clickListener = (ev: MouseEvent | TouchEvent) => {
-      if (ev.target !== ref.current) {
-        setShowDropdown(false);
-      }
-    };
-    document.addEventListener('pointerdown', clickListener);
-    return () => {
-      document.removeEventListener('pointerdown', clickListener);
-    };
-  }, []);
-  const stopPropagation = (ev: React.MouseEvent | React.TouchEvent) => {
-    ev.stopPropagation();
-  };
   return (
-    <Container ref={ref} onPointerDown={stopPropagation}>
-      <IconButton onClick={onGearClick}>
-        <Gear color={theme.style.iconsColor} />
-      </IconButton>
-      {showDropdown && (
-        <Dropdown style={{ backgroundColor: theme.style.bacgroundColor }}>
-          <IconButton onClick={handleBinClick} title="Clean">
-            <Bin color={theme.style.iconsColor} />
-          </IconButton>
-          <Line style={{ backgroundColor: theme.style.iconsColor }} />
-          <IconButton
-            onClick={handleSwitchThemeClick}
-            title="Switch color theme"
-          >
-            {theme.curentTheme === 'dark' ? (
-              <Sun color={theme.style.iconsColor} />
-            ) : (
-              <Moon color={theme.style.iconsColor} />
-            )}
-          </IconButton>
-          <IconButton
-            onClick={handleScreenModeClick}
-            title={isFullScreen ? 'Minimize' : 'Fullscreen'}
-          >
-            {isFullScreen ? (
-              <Minimize color={theme.style.iconsColor} />
-            ) : (
-              <Fullscreen color={theme.style.iconsColor} />
-            )}
-          </IconButton>
-          <IconButton onClick={onDownloadlick}>
-            <Download style={{ width: 40 }} color={theme.style.iconsColor} />
-          </IconButton>
-        </Dropdown>
-      )}
-    </Container>
+    <IconDropdown
+      Icon={Gear}
+      options={[
+        {
+          Icon: Bin,
+          id: 'bin',
+          title: 'Clean',
+          onClick: onBinClick,
+        },
+        {
+          Icon: theme.curentTheme === 'dark' ? Sun : Moon,
+          id: 'theme',
+          title: 'Switch color theme',
+          onClick: switchTheme,
+        },
+        {
+          Icon: isFullScreen ? Minimize : Fullscreen,
+          id: 'fullscreen',
+          title: isFullScreen ? 'Minimize' : 'Fullscreen',
+          onClick: switchScreenMode,
+        },
+        {
+          Icon: StyledDownload as TIcon,
+          id: 'download',
+          title: 'Download image',
+          onClick: onDownloadlick,
+        },
+      ]}
+    />
   );
 };
 

@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 
-export const Container = styled.div({
-  padding: '10px 5px',
+export const OptionsList = styled.div({
   display: 'flex',
   alignItems: 'center',
+  marginTop: 5,
 });
 
 export const CloseButton = styled.button({
@@ -18,4 +18,12 @@ export const CloseButton = styled.button({
   border: '1px solid black',
   padding: 5,
   cursor: 'pointer',
+});
+
+export const Container = styled.div({
+  padding: '5px 5px 10px',
+  textAlign: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
 });

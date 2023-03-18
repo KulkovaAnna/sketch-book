@@ -1,11 +1,11 @@
 import Konva from 'konva';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { useRef, useState } from 'react';
-import { Brush, LINE_WIDTH_THIN } from '../../constants/board';
-import { PickerColor } from '../../constants/colors';
-import { Point } from '../../controllers/CanvasController';
-import { BoardController } from '../../controllers/useDrawBoardController';
-import { HistoryStore } from '../../stores/HistoryStore';
+import { Brush, LineWidth } from 'constants/editor';
+import { PickerColor } from 'constants/editor';
+import { Point } from 'controllers/CanvasController';
+import { BoardController } from 'controllers/useDrawBoardController';
+import { HistoryStore } from 'stores/HistoryStore';
 
 interface Args {
   boardController: BoardController;
@@ -19,7 +19,7 @@ export default function useBoard({
   historyStore,
 }: Args) {
   const [brushColor, setBrushColor] = useState(PickerColor.BLACK);
-  const [brushWidth, setBrushWidth] = useState(LINE_WIDTH_THIN);
+  const [brushWidth, setBrushWidth] = useState(LineWidth.THIN);
   const [brush, setBrush] = useState(Brush.PEN);
 
   const line = useRef<Point[]>([]);
