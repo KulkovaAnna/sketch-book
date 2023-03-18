@@ -6,6 +6,7 @@ import ExpandingPicker, {
 } from 'components/ExpandingPicker';
 import { Circle } from './styles';
 import ThemeContext from 'stores/ThemeStore';
+import useAgregatorImages from './useAgregatorImages';
 
 type Media = 'image' | 'sticker';
 
@@ -14,7 +15,6 @@ export interface MediaPickerProps
 
 interface OptionProps {
   type: Media;
-  onClick?(): void;
 }
 
 const getIcon = (type: Media, color: string) => {
@@ -26,21 +26,16 @@ const getIcon = (type: Media, color: string) => {
   }
 };
 
-const onClick = (type: Media) => {
-  switch (type) {
-    case 'image':
-      return () => {
-        console.log('image');
-      };
-    // case 'sticker':
-    //   return () => {console.log('sticker')}
-  }
-};
-
-const Option: FC<OptionProps> = ({ type, onClick }) => {
+const Option: FC<OptionProps> = ({ type }) => {
   const theme = useContext(ThemeContext);
+  const { images, loadMoreImages } = useAgregatorImages();
   const handleClick = () => {
-    onClick?.();
+    switch (type) {
+      case 'image':
+        if (images.length <= 0) {
+          loadMoreImages();
+        }
+    }
   };
   return (
     <Circle onClick={handleClick}>
@@ -50,8 +45,7 @@ const Option: FC<OptionProps> = ({ type, onClick }) => {
 };
 
 const renderItem: ExpandingPickerRenderItem<Media> = ({ value }) => {
-  const handleClick = onClick(value);
-  return <Option type={value} onClick={handleClick} />;
+  return <Option type={value} />;
 };
 
 const values: Media[] = ['image'];
