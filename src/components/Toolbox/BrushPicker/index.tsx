@@ -1,9 +1,10 @@
 import { FC, useContext } from 'react';
 import { Eraser, Pen } from 'icons';
-import ExpandingPicker, {
+import {
+  ExpandingPicker,
   ExpandingPickerRenderItem,
   ExpandingPickerRenderItemProps,
-} from 'components/ExpandingPicker';
+} from 'components';
 import { Circle } from './styles';
 import { Brush } from 'constants/editor';
 import ThemeContext from 'stores/ThemeStore';

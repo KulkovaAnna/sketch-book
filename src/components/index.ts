@@ -7,4 +7,5 @@ export { default as Dropdown } from './Dropdown';
 export {
   default as ExpandingPicker,
   type ExpandingPickerRenderItem,
+  type ExpandingPickerRenderItemProps,
 } from './ExpandingPicker';

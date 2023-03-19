@@ -1,4 +1,4 @@
-import { TIcon } from 'icons/types';
+import { TIcon } from 'icons';
 import { FC, Fragment, useContext } from 'react';
 import ThemeContext from 'stores/ThemeStore';
 import Dropdown, { DropdownProps } from '..';

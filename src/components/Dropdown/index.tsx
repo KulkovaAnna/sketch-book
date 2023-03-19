@@ -1,4 +1,4 @@
-import { TIcon } from 'icons/types';
+import { TIcon } from 'icons';
 import {
   FC,
   PropsWithChildren,

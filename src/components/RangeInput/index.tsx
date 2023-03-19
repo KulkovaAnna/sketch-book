@@ -27,7 +27,7 @@ const RangeInput: FC<Props> = ({ max, min, step, onChange }) => {
       />
       <Datalist id="markers">
         {values.map((val) => (
-          <Marker value={val} label={val.toString()} />
+          <Marker key={val} value={val} label={val.toString()} />
         ))}
       </Datalist>
     </Container>

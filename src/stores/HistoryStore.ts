@@ -12,14 +12,14 @@ export interface HistoryElement<T = ActionType> {
     ? HistoryDrawingPayload
     : T extends 'clean'
     ? null
-    : {};
+    : unknown;
 }
 
 type History = HistoryElement[];
 
 export class HistoryStore {
   fullHistory: History = [];
-  historyPosition: number = -1;
+  historyPosition = -1;
 
   constructor(defaultHistory: History = []) {
     this.fullHistory = defaultHistory;

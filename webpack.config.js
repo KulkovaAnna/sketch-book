@@ -6,6 +6,10 @@ module.exports = {
       './src/stores',
       './src/icons',
       './src/controllers',
+      './src/screens',
+      './src/clients',
+      './src/layouts',
+      './src/types',
     ],
   },
 };

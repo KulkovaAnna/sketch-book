@@ -13,15 +13,22 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": "src",
+    "jsx": "preserve",
+    "baseUrl": ".",
     "paths": {
-      "constants/*": ["constants/*"],
-      "components": ["components"],
-      "icons": ["icons"],
-      "stores/*": ["stores/*"],
-      "controllers/*": ["controllers/*"]
-    }
+      "constants/*": ["./src/constants/*"],
+      "components": ["src/components"],
+      "icons": ["./src/icons"],
+      "stores/*": ["./src/stores/*"],
+      "controllers/*": ["./src/controllers/*"],
+      "screens": ["./src/screens"],
+      "clients/*": ["./src/clients/*"],
+      "layouts": ["./src/layouts"],
+      "types/*": ["./src/types/*"]
+    },
+    "incremental": true,
+    "module": "esnext"
   },
-  "include": ["src"]
+  "include": ["."],
+  "exclude": ["node_modules"]
 }

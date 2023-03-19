@@ -2,10 +2,11 @@ import { FC, useContext } from 'react';
 import { LineWidth } from 'constants/editor';
 import ThemeContext from 'stores/ThemeStore';
 import { CurveLine } from 'icons';
-import ExpandingPicker, {
+import {
+  ExpandingPicker,
   ExpandingPickerRenderItem,
   ExpandingPickerRenderItemProps,
-} from 'components/ExpandingPicker';
+} from 'components';
 import { Circle } from './styles';
 
 export interface LineWidthPickerProps
