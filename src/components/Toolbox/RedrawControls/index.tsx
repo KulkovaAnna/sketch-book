@@ -1,4 +1,4 @@
-import { FC, memo, useContext } from 'react';
+import { FC, useContext, useMemo } from 'react';
 import ThemeContext from 'stores/ThemeStore';
 import { RoundArrow } from 'icons';
 import { Container, IconButton, Redo } from './styles';
@@ -13,14 +13,17 @@ const RedrawConrols: FC<RedrawControlsProps> = ({
   onUndoClick,
 }) => {
   const theme = useContext(ThemeContext);
-  const Arrow = memo(() => <RoundArrow color={theme.style.iconsColor} />);
+  const arrow = useMemo(
+    () => <RoundArrow color={theme.style.iconsColor} />,
+    [theme.style.iconsColor]
+  );
   return (
     <Container>
       <IconButton onClick={onUndoClick} title="Undo">
-        <Arrow />
+        {arrow}
       </IconButton>
       <Redo onClick={onRedoClick} title="Redo">
-        <Arrow />
+        {arrow}
       </Redo>
     </Container>
   );

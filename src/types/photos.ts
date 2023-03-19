@@ -1,3 +1,11 @@
+type OrderBy = 'latest' | 'relevant';
+
+export interface DefaultPhotosParams {
+  resultsCount?: number;
+  page?: number;
+  orderBy?: OrderBy;
+}
+
 interface User {
   id: string;
   bio: string | null;

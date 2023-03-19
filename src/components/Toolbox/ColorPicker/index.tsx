@@ -3,7 +3,7 @@ import { PickerColor } from 'constants/editor';
 import { Checkmark } from 'icons';
 import { ExpandingPicker, ExpandingPickerRenderItem } from 'components';
 import { ColorCircle } from './styles';
-import { ExpandingPickerRenderItemProps } from 'components/ExpandingPicker';
+import { ExpandingPickerRenderItemProps } from 'components';
 
 export interface ColorPickerProps
   extends Pick<ExpandingPickerRenderItemProps<PickerColor>, 'title'> {

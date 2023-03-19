@@ -3,8 +3,8 @@ import ThemeContext from 'stores/ThemeStore';
 import { Bin, Fullscreen, Gear, Minimize, Moon, Sun } from 'icons';
 import useSettings from './useSettings';
 import { StyledDownload } from './styles';
-import { TIcon } from 'icons/types';
-import IconDropdown from 'components/Dropdown/IconDropdown';
+import { TIcon } from 'icons';
+import { IconDropdown } from 'components';
 
 export interface SettingsProps {
   onBinClick?(): void;

@@ -14,3 +14,5 @@ export { default as ChevronLeft } from './ChevronLeft';
 export { default as ChevronRight } from './ChevronRight';
 export { default as Download } from './Download';
 export { default as Image } from './Image';
+
+export { type TIcon } from './types';

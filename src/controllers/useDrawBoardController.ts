@@ -49,7 +49,7 @@ export default function useDrawBoardController({
     }
     if (canvasController) {
       const style = canvasController?.style;
-      let localPos: Point = {
+      const localPos: Point = {
         ...style,
         ...from,
       };

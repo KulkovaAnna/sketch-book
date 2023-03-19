@@ -25,6 +25,7 @@ const DrawBoard: FC<Props> = ({ onDraw, onStartDraw, onStopDraw, canvas }) => {
       onTouchEnd={onStopDraw}
       onMouseLeave={onStopDraw}
       onPointerMove={onDraw}
+      alt="Drawing board"
     />
   );
 };

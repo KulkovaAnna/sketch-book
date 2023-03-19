@@ -1,17 +1,20 @@
 import { FC, useContext } from 'react';
-import { Image } from 'icons';
-import ExpandingPicker, {
+import { Image as ImageIcon } from 'icons';
+import {
+  ExpandingPicker,
   ExpandingPickerRenderItem,
   ExpandingPickerRenderItemProps,
-} from 'components/ExpandingPicker';
+} from 'components';
 import { Circle } from './styles';
 import ThemeContext from 'stores/ThemeStore';
 import useAgregatorImages from './useAgregatorImages';
 
 type Media = 'image' | 'sticker';
 
-export interface MediaPickerProps
-  extends Pick<ExpandingPickerRenderItemProps<Media>, 'title'> {}
+export type MediaPickerProps = Pick<
+  ExpandingPickerRenderItemProps<Media>,
+  'title'
+>;
 
 interface OptionProps {
   type: Media;
@@ -20,7 +23,7 @@ interface OptionProps {
 const getIcon = (type: Media, color: string) => {
   switch (type) {
     case 'image':
-      return <Image color={color} style={{ width: 25 }} />;
+      return <ImageIcon color={color} style={{ width: 25 }} />;
     // case 'sticker':
     //   return <Eraser color={color} />;
   }

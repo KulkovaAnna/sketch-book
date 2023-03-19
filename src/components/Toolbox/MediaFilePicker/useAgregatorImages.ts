@@ -1,6 +1,6 @@
-import { Photo } from 'clients/interfaces';
-import unsplashClient from 'clients/UnsplashClient';
+import unsplashClient from 'clients/PhotosClient';
 import { useRef, useState } from 'react';
+import { Photo } from 'types/photos';
 
 interface Image {
   id: string;

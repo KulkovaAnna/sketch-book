@@ -45,7 +45,7 @@ const Editor: FC<Props> = observer(({ style }) => {
 
   const boardController = useDrawBoardController({
     canvasController,
-    canvasRedraw: stateLayer?.batchDraw.bind(layer.current)!,
+    canvasRedraw: stateLayer?.batchDraw.bind(layer.current),
   });
 
   const {
