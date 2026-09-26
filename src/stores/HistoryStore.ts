@@ -11,8 +11,8 @@ export interface HistoryElement<T = ActionType> {
   payload: T extends 'drawing'
     ? HistoryDrawingPayload
     : T extends 'clean'
-    ? null
-    : unknown;
+      ? null
+      : unknown;
 }
 
 type History = HistoryElement[];
@@ -23,7 +23,7 @@ export class HistoryStore {
 
   constructor(defaultHistory: History = []) {
     this.fullHistory = defaultHistory;
-    makeAutoObservable(this, {}, { proxy: false });
+    makeAutoObservable(this, {});
   }
 
   get currentHistory() {
@@ -37,7 +37,7 @@ export class HistoryStore {
     this.fullHistory.splice(
       this.historyPosition,
       this.fullHistory.length,
-      point
+      point,
     );
   }
 

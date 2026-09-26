@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable"
-    ],
+    "lib": ["dom", "dom.iterable", "ES2022"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -19,41 +15,20 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "constants/*": [
-        "./src/constants/*"
-      ],
-      "components": [
-        "src/components"
-      ],
-      "icons": [
-        "./src/icons"
-      ],
-      "stores/*": [
-        "./src/stores/*"
-      ],
-      "controllers/*": [
-        "./src/controllers/*"
-      ],
-      "screens": [
-        "./src/screens"
-      ],
-      "clients/*": [
-        "./src/clients/*"
-      ],
-      "layouts": [
-        "./src/layouts"
-      ],
-      "types/*": [
-        "./src/types/*"
-      ]
+      "constants/*": ["./src/constants/*"],
+      "components": ["./src/components"],
+      "icons": ["./src/icons"],
+      "stores/*": ["./src/stores/*"],
+      "controllers/*": ["./src/controllers/*"],
+      "screens": ["./src/screens"],
+      "clients/*": ["./src/clients/*"],
+      "layouts": ["./src/layouts"],
+      "types/*": ["./src/types/*"]
     },
     "incremental": true,
-    "module": "esnext"
+    "module": "esnext",
+    "target": "es2022"
   },
-  "include": [
-    "."
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["."],
+  "exclude": ["node_modules"]
 }

@@ -1,4 +1,4 @@
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, JSX } from 'react';
 
 export default interface IconProps extends HTMLAttributes<SVGElement> {
   color?: string;
