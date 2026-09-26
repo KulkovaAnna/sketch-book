@@ -14,7 +14,9 @@ import useDrawBoardController from 'controllers/useDrawBoardController';
 import HistoryContext from 'stores/HistoryStore';
 import ThemeContext from 'stores/ThemeStore';
 import DrawBoard from '../DrawBoard';
+import EraserIndicator from '../EraserIndicator';
 import Toolbox from '../Toolbox';
+import { Brush } from 'constants/editor';
 import { Container, ToolboxContainer } from './styles';
 import useBoard from './useBoard';
 import useEditor from './useEditor';
@@ -33,6 +35,7 @@ const Editor: FC<Props> = observer(({ style }) => {
   const historyStore = useContext(HistoryContext);
   const layer = useRef<Konva.Layer>(null);
   const stage = useRef<Konva.Stage>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [stateLayer, setStateLayer] = useState<Konva.Layer | null>(null);
   const theme = useContext(ThemeContext);
 
@@ -57,10 +60,15 @@ const Editor: FC<Props> = observer(({ style }) => {
     onWidthSwitch,
     brush,
     onBrushSwitch,
+    eraserCursor,
+    handleContainerMouseMove,
+    handleContainerPointerMove,
+    handleContainerMouseLeave,
   } = useBoard({
     boardController,
     historyStore,
     stage: stage.current,
+    containerRef,
   });
 
   const { undo, redo, clear, exportAsImage } = useEditor({
@@ -90,8 +98,17 @@ const Editor: FC<Props> = observer(({ style }) => {
     };
   }, [redo, undo]);
 
+  const isEraserSelected = brush === Brush.ERASER;
+
   return (
-    <Container style={style} theme={theme.style}>
+    <Container
+      ref={containerRef}
+      style={{ ...style, ...(isEraserSelected ? { cursor: 'none' } : null) }}
+      theme={theme.style}
+      onMouseMove={handleContainerMouseMove}
+      onPointerMove={handleContainerPointerMove}
+      onMouseLeave={handleContainerMouseLeave}
+    >
       <ToolboxContainer theme={theme.style}>
         <Toolbox onBinClick={clear} onDownloadClick={onDownloadClick}>
           <Toolbox.RedrawControls
@@ -134,6 +151,13 @@ const Editor: FC<Props> = observer(({ style }) => {
           />
         </Layer>
       </Stage>
+      {isEraserSelected && eraserCursor && (
+        <EraserIndicator
+          x={eraserCursor.x}
+          y={eraserCursor.y}
+          radius={eraserCursor.radius}
+        />
+      )}
     </Container>
   );
 });
