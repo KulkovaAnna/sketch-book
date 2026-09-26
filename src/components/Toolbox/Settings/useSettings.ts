@@ -39,7 +39,6 @@ export default function useSettings() {
 
 function checkFullScreen() {
   return (
-    // eslint-disable-next-line no-restricted-globals
     window.innerWidth === screen.width && window.innerHeight === screen.height
   );
 }

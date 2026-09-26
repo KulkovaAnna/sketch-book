@@ -23,7 +23,6 @@ interface Props {
   style?: CSSProperties;
 }
 
-// eslint-disable-next-line no-restricted-globals
 const { width, height } = screen;
 const canvasController = new CanvasController({
   width,

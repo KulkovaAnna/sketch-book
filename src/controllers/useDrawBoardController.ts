@@ -25,7 +25,7 @@ export default function useDrawBoardController({
 }: Args): BoardController {
   const isDrawing = useRef(false);
   const brushWidth = useRef(
-    canvasController?.style.lineWidth || LineWidth.THIN
+    canvasController?.style.lineWidth || LineWidth.THIN,
   );
 
   const startDrawing = (point: Vector2d, pressure = 1) => {
@@ -81,23 +81,23 @@ export default function useDrawBoardController({
 
   const switchColor = (color: string) => {
     if (canvasController) {
-      canvasController.style = { strokeStyle: color };
+      canvasController.setStyle({ strokeStyle: color });
     }
   };
 
   const switchBrush = (brush: Brush) => {
     if (canvasController) {
-      canvasController.style = {
+      canvasController.setStyle({
         globalCompositeOperation: getGcoByBrushType(brush),
-      };
+      });
     }
   };
 
   const switchWidth = (width: number) => {
     if (canvasController) {
-      canvasController.style = {
+      canvasController.setStyle({
         lineWidth: width,
-      };
+      });
       brushWidth.current = width;
     }
   };

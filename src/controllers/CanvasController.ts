@@ -38,7 +38,7 @@ export default class CanvasController {
   drawPoint(point: Point) {
     const { x, y, strokeStyle, ...rest } = point;
     this.context.fillStyle = strokeStyle;
-    this.style = rest;
+    this.setStyle(rest);
     this.context.beginPath();
     this.context.ellipse(
       x,
@@ -47,14 +47,14 @@ export default class CanvasController {
       point.lineWidth / 2,
       Math.PI / 4,
       0,
-      2 * Math.PI
+      2 * Math.PI,
     );
     this.context.fill();
   }
 
   drawLine(from: Point, to: Point) {
     const { x: toX, y: toY, ...toStyle } = to;
-    this.style = toStyle;
+    this.setStyle(toStyle);
     this.context.beginPath();
     this.context.moveTo(from.x, from.y);
     this.context.lineTo(toX, toY);
@@ -82,7 +82,7 @@ export default class CanvasController {
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
-  set style(style: CanvasStyle) {
+  setStyle(style: CanvasStyle) {
     Object.entries(style).forEach((item) => {
       const field = item[0] as keyof Omit<CanvasRenderingContext2D, 'canvas'>;
       const value = item[1] as never;

@@ -13,8 +13,8 @@ export default function useEditor({ boardController, historyStore }: Args) {
   const theme = useContext(ThemeContext);
 
   const getLastCleanIndex = (): number =>
-    (historyStore.currentHistory as any).findLastIndex(
-      (p: HistoryElement) => p.type === 'clean'
+    historyStore.currentHistory.findLastIndex(
+      (p: HistoryElement) => p.type === 'clean',
     );
 
   const redrawFromLastClean = (noClear = false) => {
@@ -24,7 +24,7 @@ export default function useEditor({ boardController, historyStore }: Args) {
         .slice(lastClean === -1 ? 0 : lastClean)
         .filter((hp) => hp.type === 'drawing')
         .map((hp) => (hp as HistoryElement<'drawing'>).payload),
-      noClear
+      noClear,
     );
   };
 
