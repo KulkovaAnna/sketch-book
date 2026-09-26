@@ -2,6 +2,7 @@ import React from 'react';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import 'styles/global.css';
 const ThemeLayout = dynamic(
   () => import('layouts').then((mod) => mod.ThemeLayout),
   { ssr: false }
